@@ -43,27 +43,27 @@ namespace TestTaskMVC.Controllers
             return View(logEntry);
         }
 
-        // GET: Log/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //// GET: Log/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Log/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreationTime,Message")] LogEntry logEntry)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(logEntry);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(logEntry);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,CreationTime,Message")] LogEntry logEntry)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(logEntry);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(logEntry);
+        //}
 
         // GET: Log/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -141,6 +141,16 @@ namespace TestTaskMVC.Controllers
         {
             var logEntry = await _context.Log.FindAsync(id);
             _context.Log.Remove(logEntry);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Log/Delete/5
+        [HttpPost, ActionName("DeleteAll")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAll()
+        {
+            _context.Log.RemoveRange(_context.Log);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using TestTaskMVC.Data;
+using TestTaskMVC.Models;
 
 namespace TestTaskMVC
 {
@@ -39,7 +40,7 @@ namespace TestTaskMVC
             services.AddDbContext<TestTaskMVCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("TestTaskMVCContext")));
 
-            
+            services.AddTransient<Log>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

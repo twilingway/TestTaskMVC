@@ -13,14 +13,16 @@ namespace TestTaskMVC.Controllers
     public class UsersController : Controller
     {
         private readonly TestTaskMVCContext _context;
-        
+
+        private Log _log;
         private DateTime _birthdays;
         private int _id;
         private bool _isMale;
 
-        public UsersController(TestTaskMVCContext context)
+        public UsersController(TestTaskMVCContext context, Log log)
         {
             _context = context;
+            _log = log;
         }
 
         [Route("AdminPanel")]
@@ -100,9 +102,24 @@ namespace TestTaskMVC.Controllers
             }
             int pageSize = 10;
             userSearchVM.Users = await PaginatedList<User>.CreateAsync(users.AsNoTracking(), pageNumber ?? 1, pageSize);
+
+            if (!String.IsNullOrEmpty(searchString) && !String.IsNullOrEmpty(sortOrder))
+            {
+                _log.WriteInfo($"Администратор произвел фильтрацию по {searchString} и сортировку по {sortOrder}");
+            }
+            else if (!String.IsNullOrEmpty(sortOrder))
+            {
+                _log.WriteInfo($"Администратор произвел сортировку по {sortOrder}");
+            }
+            else if (!String.IsNullOrEmpty(searchString))
+            {
+                _log.WriteInfo($"Администратор произвел фильтрацию по {searchString}");
+            }
+
             return View(userSearchVM);
         }
 
+        
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
