@@ -24,11 +24,6 @@ namespace TestTaskMVC.Controllers
             _context = context;
             _log = log;
         }
-
-        [Route("AdminPanel")]
-        [Route("AdminPanel/Index")]
-        // GET: Users
-        //public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             var userSearchVM = new UserSearchViewModel
@@ -40,6 +35,15 @@ namespace TestTaskMVC.Controllers
                 GenderSort = sortOrder == "IsMale" ? "gender_desc" : "IsMale",
                 RequestSort = sortOrder == "Request" ? "request_desc" : "Request",
             };
+            
+            if (searchString != currentFilter)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
             userSearchVM.CurrentFilter = searchString;
 
@@ -119,7 +123,7 @@ namespace TestTaskMVC.Controllers
             return View(userSearchVM);
         }
 
-        
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -204,7 +208,7 @@ namespace TestTaskMVC.Controllers
                 {
                     _context.Update(user);
                     await _context.SaveChangesAsync();
-                    
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -249,6 +253,28 @@ namespace TestTaskMVC.Controllers
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Log/Delete/5
+        [HttpPost, ActionName("DeleteAll")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAll()
+        {
+            if (_context.User == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            try
+            {
+                _context.User.RemoveRange(_context.User);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(DeleteAll));
+            }
         }
 
         private bool UserExists(int id)
