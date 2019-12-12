@@ -1,0 +1,114 @@
+﻿@model TestTaskMVC.Models.UserSearchViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-controller="Users" asp-action="Index" method="get">
+    Find by Table:
+    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+    <input type="submit" value="Search" class="btn btn-primary" /> |
+    <a asp-action="Index">Back to full List</a>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-controller="Users" asp-action="Index"
+                   asp-route-sortOrder="@Model.IDSort"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Users[0].ID)
+                </a>
+            </th>
+            <th>
+                <a asp-controller="Users" asp-action="Index"
+                   asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Users[0].Name)
+                </a>
+            </th>
+            <th>
+                <a asp-controller="Users" asp-action="Index"
+                   asp-route-sortOrder="@Model.DateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Users[0].Birthday)
+                </a>
+            </th>
+            <th>
+                <a asp-controller="Users" asp-action="Index"
+                   asp-route-sortOrder="@Model.GenderSort"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Users[0].IsMale)
+                </a>
+            </th>
+            <th>
+                <a asp-controller="Users" asp-action="Index"
+                   asp-route-sortOrder="@Model.RequestSort"
+                   asp-route-currentFilter="@Model.CurrentFilter"
+                   asp-route-searchString="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Users[0].Request)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsMale)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Request)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.Users.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Users.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageNumber="@(Model.Users.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-searchString="@Model.CurrentFilter"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageNumber="@(Model.Users.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-searchString="@Model.CurrentFilter"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
