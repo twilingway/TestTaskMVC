@@ -13,14 +13,7 @@ namespace TestTaskMVC.Controllers
     public class UsersController : Controller
     {
         private readonly TestTaskMVCContext _context;
-
-        //public string NameSort { get; set; }
-        //public string DateSort { get; set; }
-        //public string CurrentFilter { get; set; }
-        //public string CurrentSort { get; set; }
-
-        public new PaginatedList<User> User { get; set; }
-
+        
         private DateTime _birthdays;
         private int _id;
         private bool _isMale;
