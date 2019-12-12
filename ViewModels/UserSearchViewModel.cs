@@ -14,7 +14,7 @@ namespace TestTaskMVC.Models
         public string DateSort { get; set; }
         public string GenderSort { get; set; }
         public string RequestSort { get; set; }
-        public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+        public string CurrentFilter { get; set; }
     }
 }

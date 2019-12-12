@@ -15,5 +15,6 @@ namespace TestTaskMVC.Data
         }
 
         public DbSet<User> User { get; set; }
+        public DbSet<LogEntry> Log { get; set; }
     }
 }

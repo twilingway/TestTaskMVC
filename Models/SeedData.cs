@@ -11,9 +11,10 @@ namespace TestTaskMVC.Models
 {
     public static class SeedData
     {
-        private static Random random = new Random();
-        private static DateTime start = new DateTime(2010, 1, 1);
-        private static int range;
+        private static Random _random = new Random();
+        private static DateTime _start = new DateTime(2010, 1, 1);
+        private static int _range;
+        private static int _count = 5000;
         public static async void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new TestTaskMVCContext(
@@ -25,8 +26,8 @@ namespace TestTaskMVC.Models
                     return;
                 }
                 await Task.Run(() =>
-                {
-                    context.User.AddRange(GetSampleUsers(50));
+                {   
+                    context.User.AddRange(GetSampleUsers(_count));
                     context.SaveChanges();
                 });
             }
@@ -39,15 +40,15 @@ namespace TestTaskMVC.Models
                 {
                     Name = "TestName" + i,
                     Birthday = RandomDay(),
-                    IsMale = random.Next(100) <= 50 ? true : false,
-                    Request = random.Next(30)
+                    IsMale = _random.Next(100) <= 50 ? true : false,
+                    Request = _random.Next(30)
                 };
         }
 
         private static DateTime RandomDay()
         {
-            range = (DateTime.Today - start).Days;
-            return start.AddDays(random.Next(range));
+            _range = (DateTime.Today - _start).Days;
+            return _start.AddDays(_random.Next(_range));
         }
     }
 }

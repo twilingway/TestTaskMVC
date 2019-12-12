@@ -1,21 +1,26 @@
 ﻿@model TestTaskMVC.Models.UserSearchViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Клиенты";
 }
 
-<h1>Index</h1>
+    <h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 
 <form asp-controller="Users" asp-action="Index" method="get">
-    Find by Table:
-    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-    <input type="submit" value="Search" class="btn btn-primary" /> |
-    <a asp-action="Index">Back to full List</a>
+    <p>
+        Find by Table:
+        <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+        <input type="submit" value="Search" class="btn btn-primary" /> |
+        <a asp-action="Index">Back to full List</a>
+        
     </p>
+</form>
+<form asp-action="DeleteAll">
+    <input type="submit" value="DeleteAll" class="btn btn-danger" />
 </form>
 <table class="table">
     <thead>
@@ -112,3 +117,5 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
+
+
